@@ -94,9 +94,9 @@
         if (custom === ownerHair_6) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_6;}
         if (custom === ownerHair_7) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_7;}
 
-        document.getElementById('advise').innerHTML = getAdvise(paintColour, pravila);
+        document.getElementById('advise').innerHTML = getAdvise(paintColour, pravila, ownerHairColour);
     }
-    function getAdvise(paint, pravila)
+    function getAdvise(paint, pravila, ownerHairColour)
     {
         let advText="";
         for (let i = 0; i < pravila.length; i++) {
@@ -111,12 +111,35 @@
                 if (ownerHairColour === ownerHair_7) advText = pravila[i][8];
             }
         }
-        if (advText=="v") {advText="Применение данного оттенка обеспечит желаемый результат окрашивания на 100%"};
+        //Добавить переход по ссылке
+        if (advText=="v") {advText="Применение данного оттенка обеспечит желаемый результат окрашивания на 100%"+"<br>"+"<button type=\"button\">Перейти к примерке</button>"};
         if (advText=="*") {advText="Для получения желаемого оттенка необходимо предварительно осветить волосы"};
-        if (advText=="-") {advText="Не рекомендуется для использования на волосах с сединой более 70%"};
+        if (advText=="-") {
+            let affordablePaintList = getPaintList(paint, pravila, ownerHairColour, "v");
+            advText="Не рекомендуется для использования на волосах с сединой более 70%"
+        };
         return advText;
 
     }
+    function getPaintList(paint, pravila, ownerHairColour, s)
+    {
+        let paintList = [];
+        let advText="";
+        for (let i = 0; i < pravila.length; i++) {
+            // if (pravila[i][1]===paint)
+            {
+                if (ownerHairColour === ownerHair_1) if (pravila[i][2]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_2) if (pravila[i][3]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_3) if (pravila[i][4]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_4) if (pravila[i][5]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_5) if (pravila[i][6]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_6) if (pravila[i][7]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_7) if (pravila[i][8]===s) paintList.push(pravila[i][1]);
+            }
+        }
+        return paintList;
+    }
+
 
 </script>
 
