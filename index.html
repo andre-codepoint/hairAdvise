@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3></h3>
+
+<!--<button type="button"-->
+<!--        onclick="document.getElementById('demo').innerHTML = ">-->
+<!--    Click me to display Date and Time.</button>-->
+<form>
+    <select id="selectAllPaint" onchange="selectPaint()"></select>
+    <!--    <p><input type="submit" value="Submit"></p>-->
+</form>
+<p id="QR"></p>
+<p id="proposition"></p>
+<p id="customerHairColour"></p>
+<p id="realHairColour"></p>
+<p id="advise"></p>
+<p id="selectPaint"></p>
+<form>
+<select id="selectNumber" onchange="singleSelectChangeValue()"></select>
+<!--    <p><input type="submit" value="Submit"></p>-->
+</form>
+<!--<input type="text" id="textFieldValueJS" class="form-control"-->
+<!--       placeholder="get value on option select">-->
+<script>
+
+
+    let paintColour = "";
+    document.getElementById("selectNumber").style.visibility = "hidden";
+    // document.getElementById("selectAllPaint").style.display = "none";
+    document.getElementById("selectAllPaint").style.display = "none";
+
+   // задаем цвета волос покупателя
+   let ownerHair_1 = "светло-русые", ownerHair_2 = "русые", ownerHair_3 = "темно-русые",ownerHair_4 = "средне-коричневые", ownerHair_5 = "темно-коричневые", ownerHair_6 = "чёрные", ownerHair_7 = "седые";
+
+   let ownerHairColour='';
+   // задаем ширину и высоту картинки образцов волос
+    let w=100, h=50;
+   // матрица правил соответствия цвета краски и цвета волос покупателя
+    //  const colourPaint_1 = {group:"Intense", name:"114 Карамель", svetloRusyi:"v", rusyi:"v", temnoRusyi:"*", sredneKorichnevyi:"*", temnoKorichnevyi:"*", chernyi:"*", sedoy:"-"};
+    //  const colourPaint_2 = {group:"Intense", name:"120 Жемчужно-серебристый", svetloRusyi:"v", rusyi:"v", temnoRusyi:"v", sredneKorichnevyi:"*", temnoKorichnevyi:"*", chernyi:"*", sedoy:"-"};
+    const colourPaint_1 =   ["Intense", "114Карамель",                 "v", "v", "*", "*", "*", "*", "-"];
+    const colourPaint_2 =   ["Intense", "120Жемчужно-серебристый",     "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_3 =   ["Intense", "111Мокрый песок",             "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_4 =   ["Intense", "246Талая вода",               "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_5 =   ["Intense", "216Пепельный блонд",          "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_6 =   ["Intense", "010Блонд",                    "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_7 =   ["Intense", "012Светло-русый",             "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_8 =   ["Intense", "130Пшеница",                  "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_9 =   ["Intense", "1000Чистый блонд",            "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_10 =  ["Intense", "1001Платиновый блонд",        "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_11 =  ["Intense", "1002Теплый блонд",            "v", "v", "v", "*", "*", "*", "-"];
+    const colourPaint_12 =  ["Avena",   "014Русый",                    "v", "v", "*", "*", "*", "*", "v"];
+    const colourPaint_13 =  ["Avena",   "067Капучино",                 "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_14 =  ["Avena",   "141Шоколадный",               "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_15 =  ["Avena",   "042Каштановый",               "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_16 =  ["Avena",   "015Темно-русый",              "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_17 =  ["Avena",   "015Натуральный кофе",         "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_18 =  ["Avena",   "670Ольха",                    "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_19 =  ["Avena",   "723Графит",                   "v", "v", "v", "v", "v", "*", "-"];
+    const colourPaint_20 =  ["Avena",   "066Золотистый мускат",        "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_21 =  ["Avena",   "583Миндаль",                  "v", "v", "v", "v", "*", "*", "v"];
+    const colourPaint_22 =  ["Avena",   "053Черный",                   "v", "v", "v", "v", "v", "v", "v"];
+    const colourPaint_23 =  ["Avena",   "052Иссиня-черный",            "v", "v", "v", "v", "v", "v", "v"];
+    const colourPaint_24 =  ["Avena",   "043Темно-каштановый",         "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_25 =  ["Avena",   "470Мокко",                    "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_26 =  ["Avena",   "142Черный шоколад",           "v", "v", "v", "v", "v", "v", "v"];
+    const colourPaint_27 =  ["Avena",   "034Дикая вишня",              "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_28 =  ["Avena",   "037Баклажан",                 "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_29 =  ["Avena",   "033Махогон",                  "v", "v", "v", "v", "*", "*", "v"];
+    const colourPaint_30 =  ["Avena",   "036Божоле",                   "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_31 =  ["Avena",   "035Гранат",                   "v", "v", "v", "v", "v", "*", "v"];
+    const colourPaint_32 =  ["Avena",   "233Рубин",                    "v", "v", "v", "v", "*", "*", "v"];
+    const colourPaint_33 =  ["Avena",   "131Медный шик",               "v", "v", "v", "v", "*", "*", "v"];
+    const colourPaint_34 =  ["Avena",   "322Красная рябина",           "v", "v", "v", "v", "*", "*", "v"];
+    const colourPaint_35 =  ["Avena",   "734Тициан",                   "v", "v", "v", "v", "*", "*", "v"];
+    const pravila = [colourPaint_1, colourPaint_2, colourPaint_3, colourPaint_4, colourPaint_5, colourPaint_6, colourPaint_7,
+        colourPaint_8, colourPaint_9, colourPaint_10, colourPaint_11, colourPaint_12, colourPaint_13, colourPaint_14, colourPaint_15,
+        colourPaint_16, colourPaint_17, colourPaint_18, colourPaint_19, colourPaint_20, colourPaint_21, colourPaint_22, colourPaint_23,
+        colourPaint_24, colourPaint_25, colourPaint_26, colourPaint_27, colourPaint_28, colourPaint_29, colourPaint_30, colourPaint_31,
+        colourPaint_32,colourPaint_33,colourPaint_34,colourPaint_35];
+    if (paintColour!="") {
+        document.getElementById("QR").innerHTML = "Вы выбрали:" + " " + paintColour;
+        document.getElementById("proposition").innerHTML = "Укажите Ваш естественный цвет";
+    }
+    else
+    {
+        let options = getAllPaintList(pravila);
+        document.getElementById("selectAllPaint").style.display="initial";
+        document.getElementById("selectAllPaint").innerHTML=buildSelectFromArray(options, "Выберите краску");
+
+     }
+    // компонуем HTML строки для отображения образцов волос для выбора покупателем
+    t1="<img alt=ownerHair_1 src=светло-русые.jpg style=width:" + w + "px;height:" + h + "px; onclick=imgClick(ownerHair_1)>";
+    t2="<img alt=ownerHair_2 src=русые.jpg style=width:" + w + "px;height:" + h + "px; onclick=imgClick(ownerHair_2)>";
+    t3="<img alt=ownerHair_3 src=темно-русые.jpg style=width:" + w + "px;height:" + h + "px; onclick=imgClick(ownerHair_3)>";
+    t4="<img alt=ownerHair_4 src=средне-коричневые.jpg style=width:" + w + "px;height:" + h + "px; onclick=imgClick(ownerHair_4)>";
+    t5="<img alt=ownerHair_5 src=темно-коричневые.jpg style=width:" + w + "px;height:" + h + "px; onclick=imgClick(ownerHair_5)>";
+    t6="<img alt=ownerHair_6 src=чёрные.jpg style=width:" + w + "px;height:" + h + "px; onclick=imgClick(ownerHair_6)>";
+    t7="<img alt=ownerHair_7 src=седые.jpg style=width:" + w + "px;height:" + h + "px; onclick=imgClick(ownerHair_7)>";
+    // text = "OK!"+ "<br>"+t1+" "+d1+"<br>"+t2+" "+d2+ "<br>"+t3+" "+d3+ "<br>"+t4+" "+d4+ "<br>"+t5+" "+d5+ "<br>"+t6+" "+d6+ "<br>";
+    document.getElementById('customerHairColour').innerHTML = t1+t2+t3+t4+t5+t6+t7;
+
+    //paintColour = document.querySelector("#selectNumber");
+
+    function singleSelectChangeValue()
+    {
+        let selObj = document.getElementById("selectNumber");
+        paintColour = selObj.value;
+        document.getElementById("QR").innerHTML = "Вы выбрали:" + " " + paintColour;
+        document.getElementById('customerHairColour').style.display="none";
+        document.getElementById('selectAllPaint').style.display="none";
+        document.getElementById('proposition').style.display="none";
+        imgClick(paintColour);
+    }
+
+    function selectPaint()
+    {
+        let selObj = document.getElementById("selectAllPaint");
+        paintColour = selObj.value;
+        document.getElementById("QR").innerHTML = "Вы выбрали:" + " " + paintColour;
+        document.getElementById("proposition").innerHTML = "Укажите Ваш естественный цвет";
+    }
+
+    function imgClick(custom) {
+        let txt= "";
+        document.getElementById("selectNumber").style.visibility = "hidden";
+        let yourColourIs = "Ваш естественный цвет волос - ";
+        if (custom === ownerHair_1) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_1;}
+        if (custom === ownerHair_2) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_2;}
+        if (custom === ownerHair_3) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_3;}
+        if (custom === ownerHair_4) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_4;}
+        if (custom === ownerHair_5) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_5;}
+        if (custom === ownerHair_6) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_6;}
+        if (custom === ownerHair_7) {document.getElementById("realHairColour").innerHTML = yourColourIs + custom;ownerHairColour = ownerHair_7;}
+        document.getElementById('advise').innerHTML = getAdvise(paintColour, pravila, ownerHairColour, custom);
+    }
+    function getAdvise(paint, pravila, ownerHairColour, colourProblemHair)
+    {
+        let advText="";
+        for (let i = 0; i < pravila.length; i++) {
+            if (pravila[i][1]===paint)
+            {
+                if (ownerHairColour === ownerHair_1) advText = pravila[i][2];
+                if (ownerHairColour === ownerHair_2) advText = pravila[i][3];
+                if (ownerHairColour === ownerHair_3) advText = pravila[i][4];
+                if (ownerHairColour === ownerHair_4) advText = pravila[i][5];
+                if (ownerHairColour === ownerHair_5) advText = pravila[i][6];
+                if (ownerHairColour === ownerHair_6) advText = pravila[i][7];
+                if (ownerHairColour === ownerHair_7) advText = pravila[i][8];
+            }
+        }
+        //Добавить переход по ссылке
+        if (advText=="v") {advText="Применение "+paintColour+" обеспечит желаемый результат окрашивания на 100%"+"<br>"+"<button type=\"button\">Перейти к примерке</button>"};
+        if (advText=="*") {advText="Для получения желаемого оттенка необходимо предварительно осветить волосы"};
+        if (advText=="-") {
+            let options = getPaintList(paint, pravila, ownerHairColour, "v");
+            advText=paintColour+" не рекомендуется для использования на волосах с сединой более 70%";
+
+            document.getElementById("selectNumber").innerHTML=buildSelectFromArray(options,"Выберите другой цвет");
+            document.getElementById("selectNumber").style.visibility="visible";
+            document.getElementById('advise').innerHTML = getAdvise(paintColour, pravila, ownerHairColour);
+            // imgClick(colourProblemHair);
+        //    select.innerHTML = "<form id=\"myForm\">" +"<select id=\"selectNumber\">" + "<option>Выберите другой цвет</option>"+ select.innerHTML+"</select></form>";
+        };
+        return advText;
+
+    }
+
+    function buildSelectFromArray(options, nadpis)
+    {
+        let selectTxt="";
+        // Optional: Clear all existing options first:
+
+        // Populate list with options:
+        for(let i = 0; i < options.length; i++) {
+            let opt = options[i];
+            selectTxt += "<option value=" + opt + ">" + opt + "</option>";
+        }
+        selectTxt = "" +"<option>"+nadpis+"</option>"+ selectTxt;
+        return selectTxt;
+    }
+    function getPaintList(paint, pravila, ownerHairColour, s)
+    {
+        let paintList = [];
+        let advText="";
+        for (let i = 0; i < pravila.length; i++) {
+
+            {
+                if (ownerHairColour === ownerHair_1) if (pravila[i][2]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_2) if (pravila[i][3]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_3) if (pravila[i][4]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_4) if (pravila[i][5]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_5) if (pravila[i][6]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_6) if (pravila[i][7]===s) paintList.push(pravila[i][1]);
+                if (ownerHairColour === ownerHair_7) if (pravila[i][8]===s) paintList.push(pravila[i][1]);
+            }
+        }
+        return paintList;
+    }
+    function getAllPaintList(pravila)
+    {
+        let paintList = [];
+        for (let i = 0; i < pravila.length; i++) {
+
+            {
+                paintList.push(pravila[i][1]);
+
+            }
+        }
+        return paintList;
+    }
+
+
+
+</script>
+</body>
+</html>
